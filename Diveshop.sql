@@ -71,7 +71,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DEST`;
 CREATE TABLE `DEST` (
-  `Destination_No` int(11) NOT NULL,
+  `Destination_No` int(11) NOT NULL AUTO_INCERMENT,
   `Destination_Name` varchar(255) default NULL,
   `Avg_Temp_F` double default NULL,
   `Avg_Temp_C` double default NULL,
