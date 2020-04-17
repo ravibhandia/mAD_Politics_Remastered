@@ -180,7 +180,7 @@ CREATE TABLE `DIVEORDS` (
   `VacationCost` double default NULL,
   PRIMARY KEY  (`Order_No`),
   KEY `Customer_No` (`Customer_No`),
-  KEY `DESTDIVEORDS` (`Destination`),
+  KEY CONSTRAINT `fk_Destination_No` FOREIGN KEY (Destination_No) REFERENCES DEST (Destination_No),
   KEY `DIVECUSTDIVEORDS` (`Customer_No`),
   KEY `DIVEORDSShip_Via` (`Ship_Via`),
   KEY `SHIPVIADIVEORDS` (`Ship_Via`)
