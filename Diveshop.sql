@@ -138,7 +138,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DIVEITEM`;
 CREATE TABLE `DIVEITEM` (
-  `Order_No` int(11) default NULL,
+  `Order_No` int(11) NOT Null AUTO_INCERMENT,
   `Item_No` int(11) default NULL,
   `Rental_Sale` varchar(255) default NULL,
   `Qty` smallint(6) default NULL,
