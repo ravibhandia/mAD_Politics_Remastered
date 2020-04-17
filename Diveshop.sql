@@ -176,7 +176,7 @@ CREATE TABLE `DIVEORDS` (
   `No_Of_People` smallint(6) default NULL,
   `Depart_Date` datetime default NULL,
   `Return_Date` datetime default NULL,
-  `Destination` varchar(255) default NULL,
+  `Destination_No` int(11) default NULL,
   `VacationCost` double default NULL,
   PRIMARY KEY  (`Order_No`),
   KEY `Customer_No` (`Customer_No`),
