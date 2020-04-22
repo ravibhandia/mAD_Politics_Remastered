@@ -71,7 +71,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DEST`;
 CREATE TABLE `DEST` (
-  `Destination_No` int(11) NOT NULL,
+  `Destination_No` int(11) NOT NULL AUTO_INCERMENT,
   `Destination_Name` varchar(255) default NULL,
   `Avg_Temp_F` double default NULL,
   `Avg_Temp_C` double default NULL,
@@ -180,7 +180,7 @@ CREATE TABLE `DIVEORDS` (
   `VacationCost` double default NULL,
   PRIMARY KEY  (`Order_No`),
   KEY `Customer_No` (`Customer_No`),
-  KEY `DESTDIVEORDS` (`Destination`),
+  KEY CONSTRAINT `fk_Destination_No` FOREIGN KEY (Destination_No) REFERENCES DEST (Destination_No),
   KEY `DIVECUSTDIVEORDS` (`Customer_No`),
   KEY `DIVEORDSShip_Via` (`Ship_Via`),
   KEY `SHIPVIADIVEORDS` (`Ship_Via`)
