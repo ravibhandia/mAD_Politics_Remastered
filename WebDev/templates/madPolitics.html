@@ -1,0 +1,96 @@
+<html>
+
+<head>
+
+	<title> mAD Politics - Campaign advertising </title>
+	<link rel="stylesheet"  href="{{url_for('static', filename='AdStylesheet.css') }}">
+
+</head>
+
+<body>
+
+	<div class="adtitleimage">
+	<img src="../static/politicalad.png" style="float: center;" alt="Image" height="200" width="60%">
+	<p style="text-align:center">Bernie Sanders, Green Party, Breaking Point, AOC</p>
+ 	</div>
+
+	
+	<h1> ! mAD Politics - Campaign advertising </h1>
+
+
+	<h2> Please let us know which candidate you want to know more about...</h2>
+	<ul class="userinfo">
+		<br></br>
+		<form class="userinfo_form" action="" method="">
+			<li>
+				<form method="POST">
+
+          			<label for="myname">Please Enter the Candidate's Name</label>
+          			<input id="myname" type="text" name="firstname" value="" size="30"/><br>
+          			<input type="submit">
+      			</form>
+				<!--<label for="name"> What is your name? </br></label>-->
+				<!--<input type="text" id="name" name="" size="30"><br>-->
+			</li>
+			<li>
+				<label for="work_experience"> ... </br></label>
+				Yes:
+				<input type="radio" id="work_experience_positive" name="yesorno" value="">
+				No:
+				<input type="radio" id="work_experience_negative" name="yesorno" value="">
+			</li>
+			<li>
+				<label for="year_experience"> .... </br></label>
+				<input type="number" id="work_experience_year" min="0" max="50" size="30"><br>
+			</li>
+			<li>
+				<label for="mojor"> ..... </br></label>
+				<select>
+					<option value="Industrial Engineering">dropmenu1</option>
+					<option value="Data Science">dropmenu2</option>
+					<option value="Computer Science">dropmenu3</option>
+				</select>
+			</li>
+			<li>
+				<label for="mojor"> ....... </br></label>
+				<input type="checkbox" id="skill_python" name=""> checkbox1 <br>
+				<input type="checkbox" id="skill_r" name=""> checkbox2 <br>
+				<input type="checkbox" id="skill_html" name=""> checkbox3 <br>
+				<input type="checkbox" id="skill_css" name=""> checkbox4 <br>
+				Other:<br><input type="text" id="skill_other" name="" size="30"><br><br>
+			</li>
+		</form>
+		<br></br>
+	</ul>
+
+	<ul class="button">
+		</br>
+		<button type="button">Check to see the results!</button>
+		<!--<li><a class="button" href="">Check to see the results!</a></li>-->
+	</ul>
+
+
+	<table>
+		<tr>
+			<th> Candidate </th>
+			<th> Party </th>
+			<th> Ad Cost </th>
+		</tr>
+		<tr>
+			<td> Bernie Sanders </td>
+			<td> Democrats </td>
+			<td> $$$$ </td>
+		</tr>
+
+	</table>
+
+
+
+	<h3> Related Links: </h3>
+
+	<p> News, Analysis and Opinion from POLITICO: 
+	<a href="https://www.politico.com/news/campaign-ads">Campaign-ads </a> </p> 
+
+</body>
+
+</html>
