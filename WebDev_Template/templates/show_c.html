@@ -1,0 +1,40 @@
+<html>
+<head><title>INFO 257 workshop show data</title>
+</head>
+
+<body>
+	<table class="table">
+
+		<!-- # Create table heads -->
+		<tr>
+			<th>Customer Name</th>
+			<th>City</th>
+			<th>State</th>
+
+		<!-- # Iterate through list and display values of a speific key -->
+		</tr>
+			{% for ui_row in customers %}
+		<tr>
+			<td>{{ ui_row.Cust_Name }}</td>
+			<td>{{ ui_row.City }}</td>
+			<td>{{ ui_row.State }}</td>
+			<td>{{ ui_row.Other }}</td>
+		</tr>
+
+		<!-- # Loop through each value in a collection -->
+			{% endfor %}
+
+	</table>
+
+</body>
+</html>
+
+<!--
+<html>
+<head><title>INFO 257 workshop show data</title>
+</head>
+
+<h1> Hello {{customer}}</h1>
+
+</body>
+</html> -->
