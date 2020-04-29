@@ -1,7 +1,7 @@
 candidate_id,first_name,last_name,birthday,state_id,election_year,party
-1,Joseph,Biden,11/20/1942,2020,Democrat
-2,Donald,Trump,14/06/1946,2020,Republican
-3,Bernie,Sanders,09/08/1941,2020,Democrat
-4,Elizabeth,Warren,05/22/1949,2020,Democrat
-5,Micheal,Bloomberg,02/14/1942,2020,Independent
-6,Pete,Buttigieg,01/19/1982,2020,Democrat
+1,Joseph,Biden,11/20/1942,5,2020,Democrat
+2,Donald,Trump,14/06/1946,2,2020,Republican
+3,Bernie,Sanders,09/08/1941,6,2020,Democrat
+4,Elizabeth,Warren,05/22/1949,7,2020,Democrat
+5,Micheal,Bloomberg,02/14/1942,2,2020,Independent
+6,Pete,Buttigieg,01/19/1982,8,2020,Democrat
