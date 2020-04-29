@@ -3,8 +3,10 @@ import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:mypass@mariadb-diveshop.db-network/Diveshop'
-db = SQLAlchemy(app)
+
+# Import database source
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:mypass@mariadb-diveshop.db-network/Diveshop'
+# db = SQLAlchemy(app)
 
 
 @app.route('/')
@@ -27,24 +29,6 @@ def handleReq():
 		skillSets = request.form.getlist("skillSets")
 		print(request.form)
 		print(name, age)
-
-		# Read book directory csv and display it if user lack reletive skills
-		book_list = list()
-		if 'Python' not in skillSets:
-			filename = 'Book_Directory_Python.csv'
-			data_book_Python = pd.read_csv(filename, header=0)
-			book_list += list(data_book_Python.values)
-		if 'R' not in skillSets:
-			filename = 'Book_Directory_R.csv'
-			data_book_R = pd.read_csv(filename, header=0)
-			book_list += list(data_book_R.values)
-
-		# check if every variable is valid
-		# if (error)
-
-
-		# major = findMajor(request.form['major'])
-		# pass variables to Model
 
 		return render_template("Result.html", name=name, age=age, hasWorked = hasWorked,
 		yrOfExp = yrOfExp, skillSets = skillSets, book_list = book_list) #result=modelResult, )
