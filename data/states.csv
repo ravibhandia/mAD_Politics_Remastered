@@ -3,7 +3,7 @@ state_id,state_name,state_abbreviation,population,delegates,median_income,demogr
 2,New York,NY,19450000,81,64894,median age 38.2
 3,Washington,WA,7615000,89,74073,median age 38.3
 4,Arizona,AZ,7290000,78,59246,median age 38
-5,Pennsylvania,PA,12800000,60905,median age 40.8
-6,Vermont,VT,623989,57513,median age 42.7
-7,Massachusetts,MA,6893000,77385,median age 39.5
-8,Indiana,IN,6732000,54181,median age 37.4
+5,Pennsylvania,PA,12800000,153,60905,median age 40.8
+6,Vermont,VT,623989,11,57513,median age 42.7
+7,Massachusetts,MA,6893000,91,77385,median age 39.5
+8,Indiana,IN,6732000,89,54181,median age 37.4
