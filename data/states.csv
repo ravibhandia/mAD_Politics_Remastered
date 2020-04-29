@@ -1,0 +1,5 @@
+state_id,state_name,state_abbreviation,population,delegates,median_income,demographic
+1,California,CA,39510000,415,75277,median age 36.7
+2,New York,NY,19450000,81,64894,median age 38.2
+3,Washington,WA,7615000,89,74073,median age 38.3
+4,Arizona,AZ,7290000,78,59246,median age 38
