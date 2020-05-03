@@ -3,10 +3,26 @@ DROP DATABASE IF EXISTS MAD_POLITICS;
 CREATE DATABASE MAD_POLITICS;
 USE MAD_POLITICS;
 
-DROP TABLE IF EXISTS `CANDIDATE`;
---
--- Table structure for table `CANDIDATE`
---
+DROP TABLE IF EXISTS `State`;
+CREATE TABLE `State` (
+  `State_id` int(11) NOT NULL,
+  `State_name` varchar(20) NOT NULL,
+  `State_abbreviation` varchar(20) NOT NULL,
+  `Population` int(11) NOT NULL,
+  `Delegates` int(11) NOT NULL,
+  `Median_income` int(111) NOT NULL,
+  `Median Age` DECIMAL NOT NULL,
+  PRIMARY KEY  (`State_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+Insert into `State` VALUES (1	,'California'	,'CA'	,39510000	,415	,75277	,36.7),
+                           (2	,'New York'	,'NY'	,19450000	,81	,64894	,38.2),
+                           (3	,'Washington'	,'WA'	,7615000	,89	,74073	,38.3),
+                           (4	,'Arizona'	,'AZ'	,7290000	,78	,59246	,38),
+                           (5	,'Pennsylvania'	,'PA'	,12800000	,153	,60905	,40.8),
+                           (6	,'Vermont'	,'VT'	,623989	,11	,57513	,42.7),
+                           (7	,'Massachusetts'	,'MA'	,6893000	,91	,77385	,39.5),
+                           (8	,'Indiana'	,'IN'	,6732000	,89	,54181	,37.4);
+
 
 DROP TABLE IF EXISTS `CANDIDATE`;
 CREATE TABLE `CANDIDATE` (
@@ -17,8 +33,13 @@ CREATE TABLE `CANDIDATE` (
   `State_id` int(11) NOT NULL,
   `Election_year` YEAR NOT NULL,
   `Party` varchar(30) NOT NULL,
-  PRIMARY KEY  (`Candidate_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`Candidate_id`),
+  CONSTRAINT `fk_candidate_state`
+    FOREIGN KEY (State_id) REFERENCES State (State_id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT
+
+                         ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 Insert into `CANDIDATE` VALUES (1, 'Joseph','Biden',	11/20/42,	5,	2020,	'Democrat'),
                                (2	,'Donald'	,'Trump'	,14/06/1946	,2	,2020,	'Republican'),
@@ -26,6 +47,33 @@ Insert into `CANDIDATE` VALUES (1, 'Joseph','Biden',	11/20/42,	5,	2020,	'Democra
                                (4, 'Elizabeth'	,'Warren'	,5/22/49	,7	,2020	,'Democrat'),
                                (5, 'Micheal'	,'Bloomberg',	2/14/42,	2,	2020,	'Independent'),
                                (6,'Pete',	'Buttigieg',	1/19/82,	8,	2020,	'Democrat');
+
+DROP TABLE IF EXISTS `Affiliated_groups`;
+CREATE TABLE `Affiliated_groups` (
+  `Group_id` int(11) NOT NULL,
+  `Group_name` varchar(100) NOT NULL,
+  `Candidate_id` int(11) NOT NULL,
+  PRIMARY KEY  (`Group_id`),
+  KEY (`Candidate_id`),
+  CONSTRAINT `fk_affiliated_candidate`
+    FOREIGN KEY (Candidate_id) REFERENCES CANDIDATE (Candidate_id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+INSERT into `Affiliated_groups` Values (1	,'Mike Bloomberg 2020 Inc'	,5),
+
+(2	,'TRUMP MAKE AMERICA GREAT AGAIN COMMITTEE'	,2),
+(3	,'BERNIE 2020'	,3),
+(4	,'WARREN FOR PRESIDENT INC'	,4),
+(5	,'PETE FOR AMERICA'	,6);
+
+
+
+
+
+
+
+
 
 DROP TABLE IF EXISTS `Ad_platform`;
 CREATE TABLE `Ad_platform` (
@@ -56,7 +104,15 @@ CREATE TABLE `Advertisement` (
   KEY (`Platform_id`),
   KEY (`Candidate_id`),
   KEY(`State_id`),
-  KEY(`Group_id`)
+  KEY(`Group_id`),
+  CONSTRAINT `fk_ad_candidate`
+    FOREIGN KEY (Candidate_id) REFERENCES CANDIDATE (Candidate_id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+CONSTRAINT `fk_ad_platform`
+    FOREIGN KEY (Platform_id) REFERENCES Ad_platform (Platform_id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 Insert into `Advertisement`VALUES (6756153498,1	,5	,1	,1	,'Mike Bloomberg',	'GO Mike Bloomberg'	,'2020/04/29 0:00:00',	'2020/04/29 0:00:00'	,45, 17124),
@@ -67,25 +123,7 @@ Insert into `Advertisement`VALUES (6756153498,1	,5	,1	,1	,'Mike Bloomberg',	'GO 
                                   (6756193498	,1	,6	,1	,5	,'Pete Buttigieg'	,'PETE FOR AMERICA'	,'2020/04/15 0:00:00'	,'2020/04/15 0:00:00'	,45	,19824);
 
 
-DROP TABLE IF EXISTS `State`;
-CREATE TABLE `State` (
-  `State_id` int(11) NOT NULL,
-  `State_name` varchar(20) NOT NULL,
-  `State_abbreviation` varchar(20) NOT NULL,
-  `Population` int(11) NOT NULL,
-  `Delegates` int(11) NOT NULL,
-  `Median_income` int(111) NOT NULL,
-  `Median Age` DECIMAL NOT NULL,
-  PRIMARY KEY  (`State_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-Insert into `State` VALUES (1	,'California'	,'CA'	,39510000	,415	,75277	,36.7),
-                           (2	,'New York'	,'NY'	,19450000	,81	,64894	,38.2),
-                           (3	,'Washington'	,'WA'	,7615000	,89	,74073	,38.3),
-                           (4	,'Arizona'	,'AZ'	,7290000	,78	,59246	,38),
-                           (5	,'Pennsylvania'	,'PA'	,12800000	,153	,60905	,40.8),
-                           (6	,'Vermont'	,'VT'	,623989	,11	,57513	,42.7),
-                           (7	,'Massachusetts'	,'MA'	,6893000	,91	,77385	,39.5),
-                           (8	,'Indiana'	,'IN'	,6732000	,89	,54181	,37.4);
+
 
 DROP TABLE IF EXISTS `Polling`;
 CREATE TABLE `Polling` (
@@ -94,7 +132,15 @@ CREATE TABLE `Polling` (
   `Candidate_id` int(11) NOT NULL,
   `Check_date` DATE NOT NULL,
   `Polling_percent` decimal(5,2) NOT NULL,
-  PRIMARY KEY  (`Poll_id`)
+  PRIMARY KEY  (`Poll_id`),
+  CONSTRAINT `fk_polling_state`
+    FOREIGN KEY (State_id) REFERENCES State (State_id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+CONSTRAINT `fk_polling_candidate`
+    FOREIGN KEY (Candidate_id) REFERENCES CANDIDATE (Candidate_id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 Insert into `Polling` VALUES (1	,1	,6	,3/1/20	,8.242897),
                              (2	,1	,5	,3/1/20	,13.06435),
@@ -111,23 +157,5 @@ Insert into `Polling` VALUES (1	,1	,6	,3/1/20	,8.242897),
                              (13	,3	,3	,2/28/20	,30.53929),
                              (14	,3	,1	,2/28/20	,10.37702),
                              (15	,3	,6	,2/27/20	,10.1617);
-
-DROP TABLE IF EXISTS `Affiliated_groups`;
-CREATE TABLE `Affiliated_groups` (
-  `Group_id` int(11) NOT NULL,
-  `Group_name` varchar(100) NOT NULL,
-  `Candidate_id` int(11) NOT NULL,
-  PRIMARY KEY  (`Group_id`),
-  KEY (`Candidate_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-INSERT into `Affiliated_groups` Values (1	,'Mike Bloomberg 2020 Inc'	,5),
-
-(2	,'TRUMP MAKE AMERICA GREAT AGAIN COMMITTEE'	,2),
-(3	,'BERNIE 2020'	,3),
-(4	,'WARREN FOR PRESIDENT INC'	,4),
-(5	,'PETE FOR AMERICA'	,6);
-
-
-
 
 
