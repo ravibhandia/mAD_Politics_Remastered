@@ -30,7 +30,7 @@ def index():
 
 ### QUERY 1 ###
 @app.route("/q1", methods=["POST", "GET"])
-def dest():
+def Query_1():
     # Obtain user selected topN values
     limit = request.args.get('topN')
 
@@ -54,6 +54,49 @@ def dest():
         candidate_names.append(name)          # Append this dictionary to list
 
     return render_template('q1.html',ad_spending_rank=candidate_names)
+
+### QUERY 2 ###
+@app.route("/q2", methods=["POST", "GET"])
+def Query_2():
+    #Query
+    query = "\
+    WITH vote_rank as \
+    (select State_id,\
+            rank() over(partition by State_id order by Polling_percent DESC) as Polling_rank,\
+            Candidate_id,\
+            Polling_percent,\
+            LEAD(Polling_percent, 1) over(partition by State_id order by Polling_percent DESC) as Runner_up_poll\
+    from Polling)\
+    select State.state_name,\
+           CONCAT(First_name, ' ', Last_name),\
+           (Polling_percent - Runner_up_poll) as 'Percent Lead'\
+    from vote_rank, CANDIDATE, State WHERE vote_rank.Polling_rank = 1 and\
+        vote_rank.Candidate_id = CANDIDATE.Candidate_id and\
+        vote_rank.State_id = State.State_id "
+
+    # Obtain user selected State values
+    state = request.args.get('state_selection')
+    # Show poll data of only user specified state
+    if state != "All":
+        query += " AND "
+        query += " State.State_abbreviation = '%s' " % state
+
+    # Execute Query
+    result = db.engine.execute(query)
+
+    # Create empty list
+    Poll_lead_per_state = []
+
+    # Iterate rows and append relative column values to a dictionary
+    for row in result:
+        name = {}
+        name["State_Name"] = row[0]
+        name["Candidate_Name"] = row[1]
+        name["Percent_Lead"] = row[2]
+        Poll_lead_per_state.append(name)          # Append this dictionary to list
+
+    return render_template('q2.html',State_poll_lead=Poll_lead_per_state)
+
 
 # # methods indicates a action in html
 # @app.route("/destinations", methods=["POST", "GET"])
