@@ -14,24 +14,40 @@
 	<p style="text-align:center">Bernie Sanders, Green Party, Breaking Point, AOC</p>
  	</div>
 
-	
+
 	<h1> ! mAD Politics - Campaign advertising </h1>
 
 
 	<h2> Please let us know which candidate you want to know more about...</h2>
-	<ul class="userinfo">
 		<br></br>
-		<form class="userinfo_form" action="" method="">
-			<li>
-				<form method="POST">
 
-          			<label for="myname">Please Enter the Candidate's Name</label>
-          			<input id="myname" type="text" name="firstname" value="" size="30"/><br>
-          			<input type="submit">
-      			</form>
-				<!--<label for="name"> What is your name? </br></label>-->
-				<!--<input type="text" id="name" name="" size="30"><br>-->
-			</li>
+			<!-- Query 1  -->
+
+			<form method="GET" action="/q1">
+				<li>
+				<label for="search" style="color:#E3A634"><b> 1. Which candidate has the most advisement spending?</b></label><br>
+					<p> Show top
+			  	<select id="topN" name="topN">
+						<option value="1" name="topN"> 1 </option>
+						<option value="2" name="topN"> 2 </option>
+						<option value="3" name="topN"> 3 </option>
+						<option value="4" name="topN"> 4 </option>
+						<option value="5" name="topN"> 5 </option>
+			    </select> candidates </p>
+			   	<input type="submit" value="Go and find out" />
+			</form>
+
+			<!-- # Create user selection buttons  -->
+			 <!-- <form method="POST" action="/customers">
+
+			   <div class="form-group">
+			     <input type="submit" value="List Customers" />
+			   </div>
+			 </form> -->
+
+
+			<!-- <br><br><br><br>
+
 			<li>
 				<label for="work_experience"> ... </br></label>
 				Yes:
@@ -59,7 +75,7 @@
 				<input type="checkbox" id="skill_css" name=""> checkbox4 <br>
 				Other:<br><input type="text" id="skill_other" name="" size="30"><br><br>
 			</li>
-		</form>
+
 		<br></br>
 	</ul>
 
@@ -67,10 +83,10 @@
 		</br>
 		<button type="button">Check to see the results!</button>
 		<!--<li><a class="button" href="">Check to see the results!</a></li>-->
-	</ul>
+	<!-- </ul> -->
 
 
-	<table>
+	<!-- <table>
 		<tr>
 			<th> Candidate </th>
 			<th> Party </th>
@@ -82,14 +98,14 @@
 			<td> $$$$ </td>
 		</tr>
 
-	</table>
+	</table> -->
 
 
 
 	<h3> Related Links: </h3>
 
-	<p> News, Analysis and Opinion from POLITICO: 
-	<a href="https://www.politico.com/news/campaign-ads">Campaign-ads </a> </p> 
+	<p> News, Analysis and Opinion from POLITICO:
+	<a href="https://www.politico.com/news/campaign-ads">Campaign-ads </a> </p>
 
 </body>
 

@@ -1,0 +1,54 @@
+<html>
+<head>
+ <title>INFO 257 Workshop Form</title>
+ <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+ <br>
+
+<!-- # Create user selection buttons  -->
+ <form method="POST" action="/customers">
+
+   <div class="form-group">
+     <input type="submit" value="List Customers" />
+   </div>
+ </form>
+
+ <br>
+<!-- # Create user selection buttons -->
+ <form method="POST" action="/destinations">
+
+   <div class="form-group">
+     <input type="submit" value="List Destinations" />
+   </div>
+ </form>
+
+<!-- # Ask user for input -->
+ <!-- <br>
+<form method="GET" action="/destinations">
+	<label for="search">Find Destinations by Accomodation</label>
+	<input id="search" name="search" class="form-control" type="text" /><br />
+</form> -->
+
+<!-- # Dynamic Dropdown menu selection based on the database (error free user input) -->
+<!-- # Remember to edit flask route method "/" in app.py to send the proper type data to be displayed -->
+<form method="GET" action="/destinations">
+	<label for="search">Find Destinations by Accomodation</label>
+  	<select id="accomodations" name="accomodations">
+
+		    {% for ui_row in data %}
+    		<option value="{{ui_row.Accomodations}}">{{ui_row.Accomodations}}</option>
+	    	{% endfor %}
+    	</select>
+   	<input type="submit" value="Submit" />
+</form>
+
+
+
+
+
+</body>
+
+</html>
