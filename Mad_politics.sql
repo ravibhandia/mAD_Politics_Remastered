@@ -91,11 +91,9 @@ DROP TABLE IF EXISTS `Advertisement`;
 CREATE TABLE `Advertisement` (
   `Ad_id` bigint NOT NULL,
   `Platform_id` int(11) NOT NULL,
-  `Candidate_id` int(11) NOT NULL,
   `State_id` int(11) NOT NULL,
   `Group_id` int(11) NOT NULL,
   `Ad_title` varchar(100) default NULL,
-  `Ad_content` varchar(100) default NULL,
   `Created_time` DATE default Null,
   `End_time` DATE default NULL,
   `Cost` DECIMAL default NULL,
@@ -105,11 +103,7 @@ CREATE TABLE `Advertisement` (
   KEY (`Candidate_id`),
   KEY(`State_id`),
   KEY(`Group_id`),
-  CONSTRAINT `fk_ad_candidate`
-    FOREIGN KEY (Candidate_id) REFERENCES CANDIDATE (Candidate_id)
-    ON DELETE CASCADE
-    ON UPDATE RESTRICT,
-CONSTRAINT `fk_ad_platform`
+  CONSTRAINT `fk_ad_platform`
     FOREIGN KEY (Platform_id) REFERENCES Ad_platform (Platform_id)
     ON DELETE CASCADE
     ON UPDATE RESTRICT
@@ -157,5 +151,3 @@ Insert into `Polling` VALUES (1	,1	,6	,3/1/20	,8.242897),
                              (13	,3	,3	,2/28/20	,30.53929),
                              (14	,3	,1	,2/28/20	,10.37702),
                              (15	,3	,6	,2/27/20	,10.1617);
-
-
