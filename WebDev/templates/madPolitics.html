@@ -14,13 +14,14 @@
 	<p style="text-align:center">Bernie Sanders, Green Party, Breaking Point, AOC</p>
  	</div>
 
-	
+
 	<h1> ! mAD Politics - Campaign advertising </h1>
 
 
 	<h2> Please let us know which candidate you want to know more about...</h2>
+		<br></br>
 
-<!-- Query 1  -->
+			<!-- Query 1  -->
 
 			<form method="GET" action="/q1">
 				<li>
@@ -36,7 +37,7 @@
 			   	<input type="submit" value="Go and find out" />
 			</form>
 
-<!-- Query 2  -->
+			<!-- Query 2  -->
 
 			<form method="GET" action="/q2">
 				<li>
@@ -51,58 +52,83 @@
 					<input type="submit" value="Go and find out" />
 			</form>
 
-<!-- Query 3  -->
+			<!-- Query 3  -->
 
 			<form method="GET" action="/q3">
 				<li>
 				<label for="search" style="color:#E3A634"><b> 3. Forecasted total leading states and delegates? </b></label><br>
 					<input type="submit" value="Go and find out" />
 			</form>
-	
-<!-- Query 4  -->
 
-			<form method="GET" action="/q4">
-				<li>
-				<label for="search" style="color:#000000"><b> 4. Which platform is the most popular one for ads spending?</b></label><br>
-					<h4> Show top
-			  	<select id="topNpf" name="topNpf">
-						<option value="1" name="topNpf"> 1 </option>
-						<option value="2" name="topNpf"> 2 </option>
-						<option value="3" name="topNpf"> 3 </option>
-			    </select> platforms </h4>
-			   	<input type="submit" value="Go and find out" />
-			</form>
+			<!-- # Create user selection buttons  -->
+			 <!-- <form method="POST" action="/customers">
 
-<!-- Query 5  -->
-
-			<form method="GET" action="/q5">
-				<li>
-				<label for="search" style="color:#000000"><b> 5. Check to see how candidates do in their home states?</b></label><br>
-					<p> Show the results for candidate 
-			  	<select id="canName" name="canName">
-
-		    	{% for ui_row in canname %}
-    			<option value="{{ui_row.Candidate_Name}}">{{ui_row.Candidate_Name}}</option>
-	    		{% endfor %}
-    			</select></p>
-   				
-			   	<input type="submit" value="Go and find out" />
-			</form>
+			   <div class="form-group">
+			     <input type="submit" value="List Customers" />
+			   </div>
+			 </form> -->
 
 
+			<!-- <br><br><br><br>
+
+			<li>
+				<label for="work_experience"> ... </br></label>
+				Yes:
+				<input type="radio" id="work_experience_positive" name="yesorno" value="">
+				No:
+				<input type="radio" id="work_experience_negative" name="yesorno" value="">
+			</li>
+			<li>
+				<label for="year_experience"> .... </br></label>
+				<input type="number" id="work_experience_year" min="0" max="50" size="30"><br>
+			</li>
+			<li>
+				<label for="mojor"> ..... </br></label>
+				<select>
+					<option value="Industrial Engineering">dropmenu1</option>
+					<option value="Data Science">dropmenu2</option>
+					<option value="Computer Science">dropmenu3</option>
+				</select>
+			</li>
+			<li>
+				<label for="mojor"> ....... </br></label>
+				<input type="checkbox" id="skill_python" name=""> checkbox1 <br>
+				<input type="checkbox" id="skill_r" name=""> checkbox2 <br>
+				<input type="checkbox" id="skill_html" name=""> checkbox3 <br>
+				<input type="checkbox" id="skill_css" name=""> checkbox4 <br>
+				Other:<br><input type="text" id="skill_other" name="" size="30"><br><br>
+			</li>
+
+		<br></br>
+	</ul>
 
 	<ul class="button">
 		</br>
 		<button type="button">Check to see the results!</button>
 		<!--<li><a class="button" href="">Check to see the results!</a></li>-->
-	</ul>
+	<!-- </ul> -->
+
+
+	<!-- <table>
+		<tr>
+			<th> Candidate </th>
+			<th> Party </th>
+			<th> Ad Cost </th>
+		</tr>
+		<tr>
+			<td> Bernie Sanders </td>
+			<td> Democrats </td>
+			<td> $$$$ </td>
+		</tr>
+
+	</table> -->
 
 
 
 	<h3> Related Links: </h3>
 
-	<p> News, Analysis and Opinion from POLITICO: 
-	<a href="https://www.politico.com/news/campaign-ads">Campaign-ads </a> </p> 
+	<p> News, Analysis and Opinion from POLITICO:
+	<a href="https://www.politico.com/news/campaign-ads">Campaign-ads </a> </p>
 
 </body>
 
