@@ -98,7 +98,7 @@ def Query_2():
         name["Percent_Lead"] = row[2]
         Poll_lead_per_state.append(name)          # Append this dictionary to list
 
-    return render_template('q2.html',State_poll_lead=Poll_lead_per_state)
+    return render_template('q2.html',State_poll_lead=Poll_lead_per_state, state=state)
 ################################# QUERY 2 ####################################
 
 ################################# QUERY 3 ####################################
@@ -214,7 +214,7 @@ def Query_5():
         name["Polling_percent"] = row[2]
         candidate_names.append(name)          # Append this dictionary to list
     
-    return render_template('q5.html',can_in_home=candidate_names)
+    return render_template('q5.html',can_in_home=candidate_names,canName=canName)
 ################################# QUERY 5 ####################################
 
 
