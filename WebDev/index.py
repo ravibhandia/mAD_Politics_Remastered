@@ -97,6 +97,47 @@ def Query_2():
 
     return render_template('q2.html',State_poll_lead=Poll_lead_per_state)
 
+### QUERY 3 ###
+@app.route("/q3", methods=["POST", "GET"])
+def Query_3():
+    # Query
+    query = \
+    " WITH State_lead as\
+    (SELECT State_name,\
+            RANK() OVER(PARTITION BY Polling.State_id ORDER BY Polling_percent DESC) AS Polling_rank,\
+            CONCAT(CANDIDATE.First_name, ' ', CANDIDATE.Last_name) AS Candidate_name,\
+            Polling_percent,\
+            Delegates\
+    FROM Polling, State, CANDIDATE\
+    WHERE State.State_id = Polling.State_id AND Polling.Candidate_id = CANDIDATE.Candidate_id)\
+    SELECT ROW_NUMBER() OVER(ORDER BY sum(Delegates) DESC) AS Rank,\
+           Candidate_name,\
+           count(Delegates) as Total_States,\
+           sum(Delegates) as Total_Delegates\
+    FROM State_lead\
+    WHERE Polling_rank = 1\
+    GROUP BY Candidate_name\
+    ORDER BY sum(Delegates) DESC\
+    "
+
+    # Execute Query
+    result = db.engine.execute(query)
+
+    # Create empty list
+    delegate_lead = []
+
+    # Iterate rows and append relative column values to a dictionary
+    for row in result:
+        name = {}
+        name["Rank"] = row[0]
+        name["Candidate_Name"] = row[1]
+        name["Total_Leading_states"] = row[2]
+        name["Total_Leading_Delegates"] = row[3]
+        delegate_lead.append(name)          # Append this dictionary to list
+
+    return render_template('q3.html',delegate_rank=delegate_lead)
+
+
 
 # # methods indicates a action in html
 # @app.route("/destinations", methods=["POST", "GET"])
