@@ -4,7 +4,7 @@
 
 	<title> mAD Politics - Campaign advertising </title>
 	<link rel="stylesheet"  href="{{url_for('static', filename='AdStylesheet.css') }}">
-	<style> 
+	<style>
 	input[type=button], input[type=submit] {
 		background-color: #4CAF50;
 		border: none;
@@ -25,7 +25,7 @@
 	<p style="text-align:center">Bernie Sanders, Green Party, Breaking Point, AOC</p>
  	</div>
 
-	
+
 	<h1> ! mAD Politics - Campaign advertising </h1>
 
 
@@ -43,7 +43,7 @@
 						<option value="3" name="topN"> 3 </option>
 						<option value="4" name="topN"> 4 </option>
 						<option value="5" name="topN"> 5 </option>
-			    </select> candidates 
+			    </select> candidates
 			   	<input type="submit" value="Go and find out" /></p>
 			</form>
 
@@ -58,7 +58,7 @@
 						<option value="CA">California</option>
 						<option value="WA">Washington</option>
 						<option value="NY">New York</option>
-					</select> state 
+					</select> state
 					<input type="submit" value="Go and find out" /></p>
 			</form>
 
@@ -69,7 +69,7 @@
 				<label for="search" style="color:#000000"><b> 3. Forecasted total leading states and delegates? </b></label>
 					<input type="submit" value="Go and find out" />
 			</form>
-	
+
 <!-- Query 4  -->
 
 			<form method="GET" action="/q4">
@@ -80,7 +80,7 @@
 						<option value="1" name="topNpf"> 1 </option>
 						<option value="2" name="topNpf"> 2 </option>
 						<option value="3" name="topNpf"> 3 </option>
-			    </select> platforms 
+			    </select> platforms
 			   	<input type="submit" value="Go and find out" /></p>
 			</form>
 
@@ -89,22 +89,34 @@
 			<form method="GET" action="/q5">
 				<br>
 				<label for="search" style="color:#000000"><b> 5. Check to see how candidates do in their home states?</b></label><br>
-					<p> Show the results for candidate 
+					<p> Show the results for candidate
 			  	<select id="canName" name="canName">
 
 		    	{% for ui_row in canname %}
     			<option value="{{ui_row.Candidate_Name}}">{{ui_row.Candidate_Name}}</option>
 	    		{% endfor %}
     			</select>
-   				
+
 			   	<input type="submit" value="Go and find out" /></p>
 			</form>
 
+<!-- Query 6  -->
+
+			<form method="GET" action="/q6">
+				<br>
+				<label for="search" style="color:#000000"><b> 6. Which advertisement spending boosted Polling result the most?</b></label><br>
+					<p> Show
+					<select id="User_boost_selection" name="User_boost_selection">
+						<option value="Top_5">Top 5</option>
+						<option value="Bottom_5">Bottom 5</option>
+					</select> results
+					<input type="submit" value="Go and find out" /></p>
+			</form>
 
 	<h3> Related Links: </h3>
 
-	<p> News, Analysis and Opinion from POLITICO: 
-	<a href="https://www.politico.com/news/campaign-ads">Campaign-ads </a> </p> 
+	<p> News, Analysis and Opinion from POLITICO:
+	<a href="https://www.politico.com/news/campaign-ads">Campaign-ads </a> </p>
 
 </body>
 

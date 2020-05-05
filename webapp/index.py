@@ -159,10 +159,10 @@ def Query_4():
 
     #query += " AND "
     #query += "CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name) = '%s' " % canName
-    
-    
+
+
     # Show poll data of only user specified candidate
-    
+
 
     # Execute Query
     result = db.engine.execute(query)
@@ -176,10 +176,10 @@ def Query_4():
         name["Platform_name"] = row[0]
         name["Total"] = row[1]
         platform_names.append(name)          # Append this dictionary to list
-    
+
     return render_template('q4.html',pf_rank=platform_names)
 ################################# QUERY 4 ####################################
-    
+
 
 ################################# QUERY 5 ####################################
 @app.route("/q5", methods=["POST", "GET"])
@@ -195,10 +195,10 @@ def Query_5():
 
     query += " AND "
     query += "CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name) = '%s' " % canName
-    
-    
+
+
     # Show poll data of only user specified candidate
-    
+
 
     # Execute Query
     result = db.engine.execute(query)
@@ -213,9 +213,70 @@ def Query_5():
         name["State_name"] = row[1]
         name["Polling_percent"] = row[2]
         candidate_names.append(name)          # Append this dictionary to list
-    
+
     return render_template('q5.html',can_in_home=candidate_names,canName=canName)
 ################################# QUERY 5 ####################################
+
+
+################################# QUERY 6 ####################################
+
+@app.route("/q6", methods=["POST", "GET"])
+def Query_6():
+    #Query
+    query = "\
+    WITH Ads_by_date AS (\
+    SELECT Ad_id,\
+           Platform_name,\
+           Group_id,\
+           State_name,\
+           CONCAT(First_name, ' ', Last_name) as Candidate_Name,\
+           Created_time as Ad_Start_Date,\
+           End_time as Ad_End_Date,\
+           (SELECT Polling_percent FROM Polling, Advertisement WHERE Polling.Candidate_id = Advertisement.Candidate_id AND Polling.State_id = Advertisement.State_id AND Check_date = Created_time ) AS Poll_Start,\
+           (SELECT Polling_percent FROM Polling, Advertisement WHERE Polling.Candidate_id = Advertisement.Candidate_id AND Polling.State_id = Advertisement.State_id AND Check_date = End_time) AS Poll_End,\
+           Cost\
+    FROM Advertisement\
+    LEFT JOIN CANDIDATE USING(Candidate_id)\
+    LEFT JOIN State ON State.State_id = Advertisement.State_id\
+    LEFT JOIN Ad_platform using(Platform_id)\
+    )\
+    SELECT Ad_id,\
+           Candidate_Name,\
+           Platform_name,\
+           (Poll_End - Poll_Start) AS Pull_Difference,\
+           Cost,\
+           (Poll_End - Poll_Start)/Cost AS Pull_Improvement_By_Cost\
+    FROM Ads_by_date "
+
+    # Obtain user selected State values
+    Top_Bottom_5_selection = request.args.get('User_boost_selection')
+    # Show poll data of only user specified state
+    if Top_Bottom_5_selection == "Top_5":
+        query += " ORDER BY Pull_Improvement_By_Cost DESC LIMIT 5 "
+    else:
+        query += " ORDER BY Pull_Improvement_By_Cost ASC LIMIT 4 "
+
+    # Execute Query
+    result = db.engine.execute(query)
+
+    # Create empty list
+    Ad_spending_worth = []
+
+    # Iterate rows and append relative column values to a dictionary
+    for row in result:
+        name = {}
+        name["Ad_ID"] = row[0]
+        name["Candidate_name"] = row[1]
+        name["Platform_name"] = row[2]
+        name["Pull_diff"] = row[3]
+        name["Ad_cost"] = row[4]
+        name["Pull_improvement_by_cost"] = row[5]
+        Ad_spending_worth.append(name)          # Append this dictionary to list
+
+    return render_template('q6.html',Ad_spending_worth=Ad_spending_worth)
+################################# QUERY 6 ####################################
+
+
 
 
 # # methods indicates a action in html
