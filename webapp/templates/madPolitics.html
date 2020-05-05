@@ -1,0 +1,70 @@
+<html>
+
+<head>
+
+	<title> mAD Politics - Campaign advertising </title>
+	<link rel="stylesheet"  href="{{url_for('static', filename='AdStylesheet.css') }}">
+
+</head>
+
+<body>
+
+	<div class="adtitleimage">
+	<img src="../static/politicalad.png" style="float: center;" alt="Image" height="200" width="60%">
+	<p style="text-align:center">Bernie Sanders, Green Party, Breaking Point, AOC</p>
+ 	</div>
+
+	
+	<h1> ! mAD Politics - Campaign advertising </h1>
+
+
+	<h2> Please let us know which candidate you want to know more about...</h2>
+	
+<!-- Query 4  -->
+
+			<form method="GET" action="/q4">
+				<li>
+				<label for="search" style="color:#000000"><b> 4. Which platform is the most popular one for ads spending?</b></label><br>
+					<h4> Show top
+			  	<select id="topNpf" name="topNpf">
+						<option value="1" name="topNpf"> 1 </option>
+						<option value="2" name="topNpf"> 2 </option>
+						<option value="3" name="topNpf"> 3 </option>
+			    </select> platforms </h4>
+			   	<input type="submit" value="Go and find out" />
+			</form>
+
+<!-- Query 5  -->
+
+			<form method="GET" action="/q5">
+				<li>
+				<label for="search" style="color:#000000"><b> 5. Check to see how candidates do in their home states?</b></label><br>
+					<p> Show the results for candidate 
+			  	<select id="canName" name="canName">
+
+		    	{% for ui_row in canname %}
+    			<option value="{{ui_row.Candidate_Name}}">{{ui_row.Candidate_Name}}</option>
+	    		{% endfor %}
+    			</select></p>
+   				
+			   	<input type="submit" value="Go and find out" />
+			</form>
+
+
+
+	<ul class="button">
+		</br>
+		<button type="button">Check to see the results!</button>
+		<!--<li><a class="button" href="">Check to see the results!</a></li>-->
+	</ul>
+
+
+
+	<h3> Related Links: </h3>
+
+	<p> News, Analysis and Opinion from POLITICO: 
+	<a href="https://www.politico.com/news/campaign-ads">Campaign-ads </a> </p> 
+
+</body>
+
+</html>

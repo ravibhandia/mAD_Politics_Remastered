@@ -151,3 +151,20 @@ Insert into `Polling` VALUES (1	,1	,6	,3/1/20	,8.242897),
                              (13	,3	,3	,2/28/20	,30.53929),
                              (14	,3	,1	,2/28/20	,10.37702),
                              (15	,3	,6	,2/27/20	,10.1617);
+
+
+DROP TABLE IF EXISTS `Affiliated_groups`;
+CREATE TABLE `Affiliated_groups` (
+  `Group_id` int(11) NOT NULL,
+  `Group_name` varchar(100) NOT NULL,
+  `Candidate_id` int(11) NOT NULL,
+  PRIMARY KEY  (`Group_id`),
+  KEY (`Candidate_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+INSERT into `Affiliated_groups` Values (1	,'Mike Bloomberg 2020 Inc'	,5),
+
+(2	,'TRUMP MAKE AMERICA GREAT AGAIN COMMITTEE'	,2),
+(3	,'BERNIE 2020'	,3),
+(4	,'WARREN FOR PRESIDENT INC'	,4),
+(5	,'PETE FOR AMERICA'	,6);
+
