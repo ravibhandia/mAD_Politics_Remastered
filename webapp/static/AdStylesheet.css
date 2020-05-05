@@ -41,7 +41,7 @@ div.caption {
     display: block;
 }
 
-button {
+.button {
   background-color: #555555;
   border: 1px solid;
   border-radius: 10px;
@@ -64,4 +64,11 @@ table {
 
 th, td {
   height: 50px;
+}
+
+form {
+  border: 1px solid black;
+  text-align:center;
+  background-color: E5E7E9;
+  margin-bottom: 20px;
 }

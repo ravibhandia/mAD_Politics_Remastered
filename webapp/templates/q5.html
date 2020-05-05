@@ -1,0 +1,44 @@
+<html>
+
+<head>
+
+	<title> mAD Politics - Campaign advertising </title>
+	<link rel="stylesheet"  href="{{url_for('static', filename='AdStylesheet.css') }}">
+
+</head>
+
+<body>
+
+	<div class="adtitleimage">
+	<img src="../static/politicalad.png" style="float: center;" alt="Image" height="200" width="60%">
+	<p style="text-align:center">Bernie Sanders, Green Party, Breaking Point, AOC</p>
+ 	</div>
+
+	
+	<h1> ! mAD Politics - Campaign advertising </h1>
+
+	<h2> {{canName}}'s Election Poll Results : </h2>
+	<table class="table">
+
+		<!-- # Create table heads -->
+		<tr>
+			<th>Candidate</th>
+			<th>Home State</th>
+			<th>Election Polls Results</th>
+
+		<!-- # Iterate through list and display values of a speific key -->
+		</tr>
+			{% for ui_row in can_in_home %}
+		<tr>
+			<td>{{ ui_row.Candidate_Name }}</td>
+			<td>{{ ui_row.State_name }}</td>
+			<td>{{ ui_row.Polling_percent }}</td>
+		</tr>
+
+		<!-- # Loop through each value in a collection -->
+			{% endfor %}
+
+	</table>
+
+</body>
+</html>
