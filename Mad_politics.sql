@@ -128,6 +128,7 @@ INSERT into `Affiliated_groups` Values (1	,'Mike Bloomberg 2020 Inc'	,5),
 (5	,'PETE FOR AMERICA'	,6);
 
 
-
+select * from State;
+use MAD_POLITICS;
 
 
