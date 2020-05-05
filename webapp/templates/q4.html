@@ -1,0 +1,34 @@
+<html>
+
+<head>
+
+	<title> mAD Politics - Campaign advertising </title>
+	<link rel="stylesheet"  href="{{url_for('static', filename='AdStylesheet.css') }}">
+
+</head>
+
+<body>
+
+	<table class="table">
+
+		<!-- # Create table heads -->
+		<tr>
+			<th>Advertisement platform</th>
+			<th>Total Number of Political Advertisement</th>
+
+		<!-- # Iterate through list and display values of a speific key -->
+		</tr>
+			{% for ui_row in pf_rank %}
+		<tr>
+			<td>{{ ui_row.Platform_name }}</td>
+			<td>{{ ui_row.Total }}</td>
+
+		</tr>
+
+		<!-- # Loop through each value in a collection -->
+			{% endfor %}
+
+	</table>
+
+</body>
+</html>
