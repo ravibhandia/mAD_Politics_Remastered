@@ -245,6 +245,7 @@ def Query_6():
     SELECT Ad_id,\
            Platform_name,\
            State_name,\
+           Ad_title,\
            Advertisement.State_id,\
            Affiliates.Candidate_id,\
            CONCAT(First_name, ' ', Last_name) as Candidate_Name,\
@@ -279,17 +280,18 @@ def Query_6():
     ORDER BY Polling.Candidate_id, Polling.State_id\
     )\
     SELECT Candidate_Name,\
-           Ad_id,\
+           Ad_title,\
            Platform_name,\
            State_name,\
            Ad_Start_Date,\
            Ad_End_Date,\
-           Cost,\
-           Ad_Start_Poll,\
-           Ad_End_Poll\
+           (Ad_End_Poll - Ad_Start_Poll) AS Poll_Difference,\
+           Cost\
     FROM Ads_by_date\
     LEFT JOIN Ad_Start_Poll USING (Ad_id)\
-    LEFT JOIN Ad_End_Poll USING (Ad_id) "
+    LEFT JOIN Ad_End_Poll USING (Ad_id)\
+    WHERE (Ad_End_Poll - Ad_Start_Poll) IS NOT NULL\
+    ORDER BY Candidate_Name "
 
     # Execute Query
     result = db.engine.execute(query)
@@ -301,14 +303,13 @@ def Query_6():
     for row in result:
         name = {}
         name["Candidate_name"] = row[0]
-        name["Ad_id"] = row[1]
+        name["Ad_title"] = row[1]
         name["Platform_name"] = row[2]
         name["State_name"] = row[3]
         name["Ad_Start_Date"] = row[4]
         name["Ad_End_Date"] = row[5]
-        name["Cost"] = row[6]
-        name["Ad_Start_Poll"] = row[7]
-        name["Ad_End_Poll"] = row[8]
+        name["Poll_diff"] = row[6]
+        name["Ad_cost"] = row[7]
         Ad_spending_worth.append(name)          # Append this dictionary to list
 
     return render_template('q6.html',Ad_spending_worth=Ad_spending_worth)

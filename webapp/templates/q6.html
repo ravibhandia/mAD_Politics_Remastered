@@ -21,28 +21,26 @@
 		<!-- # Create table heads -->
 		<tr>
 			<th>Candidate Name</th>
-			<th>Ad ID</th>
+			<th>Ad Title</th>
 			<th>Platform Name</th>
 			<th>Distributed at</th>
 			<th>Run Date</th>
 			<th>End Date</th>
+			<th>Poll Difference</th>
 			<th>Ad Cost</th>
-			<th>Poll Result before Ad</th>
-			<th>Poll Result after Ad</th>
 
 		<!-- # Iterate through list and display values of a speific key -->
 		</tr>
 			{% for ui_row in Ad_spending_worth %}
 		<tr>
 			<td>{{ ui_row.Candidate_name }}</td>
-			<td>{{ ui_row.Ad_id }}</td>
+			<td>{{ ui_row.Ad_title }}</td>
 			<td>{{ ui_row.Platform_name }}</td>
 			<td>{{ ui_row.State_name }}</td>
 			<td>{{ ui_row.Ad_Start_Date }}</td>
 			<td>{{ ui_row.Ad_End_Date }}</td>
-			<td>{{ ui_row.Cost }}</td>
-			<td>{{ ui_row.Ad_Start_Poll }}</td>
-			<td>{{ ui_row.Ad_End_Poll }}</td>
+			<td>{{ ui_row.Poll_diff }}</td>
+			<td>{{ ui_row.Ad_cost }}</td>
 		</tr>
 
 		<!-- # Loop through each value in a collection -->
