@@ -14,7 +14,7 @@ CREATE TABLE `State` (
   `Median Age` DECIMAL NOT NULL,
   PRIMARY KEY  (`State_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-LOAD DATA LOCAL INFILE '/Users/seanc/Documents/data/state_entity.csv'
+LOAD DATA LOCAL INFILE '/Users/danielshiferaw/Documents/Spring2020/Info257/mAD_Politics_Remastered/data/state_entity.csv'
 INTO TABLE `State`
 FIELDS TERMINATED BY ',';
 
@@ -34,12 +34,9 @@ CREATE TABLE `CANDIDATE` (
     ON DELETE CASCADE
     ON UPDATE RESTRICT
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-LOAD DATA LOCAL INFILE '/Users/seanc/Documents/data/candidate_entity.csv'
+LOAD DATA LOCAL INFILE '/Users/danielshiferaw/Documents/Spring2020/Info257/mAD_Politics_Remastered/data/candidate_entity.csv'
 INTO TABLE `CANDIDATE`
-FIELDS TERMINATED BY ','
-(`Candidate_id`, `First_name`,`Last_name`, @DATE_STR, `State_id`, `Election_year`, `Party`)
-SET `Birthday` = STR_TO_DATE(@DATE_STR, '%c/%e/%y');
-
+FIELDS TERMINATED BY ',';
 
 
 DROP TABLE IF EXISTS `Affiliates`;
@@ -54,7 +51,7 @@ DROP TABLE IF EXISTS `Affiliates`;
      ON DELETE CASCADE
      ON UPDATE RESTRICT
  ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-LOAD DATA LOCAL INFILE '/Users/seanc/Documents/data/affiliate_entity.csv'
+LOAD DATA LOCAL INFILE '/Users/danielshiferaw/Documents/Spring2020/Info257/mAD_Politics_Remastered/data/affiliate_entity.csv'
 INTO TABLE `Affiliates`
 FIELDS TERMINATED BY ',';
 
@@ -66,7 +63,7 @@ DROP TABLE IF EXISTS `Ad_platform`;
    `Platform_type` varchar(100) NOT NULL,
    PRIMARY KEY  (`Platform_id`)
  ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-LOAD DATA LOCAL INFILE '/Users/seanc/Documents/data/platform_entity.csv'
+LOAD DATA LOCAL INFILE '/Users/danielshiferaw/Documents/Spring2020/Info257/mAD_Politics_Remastered/data/platform_entity.csv'
 INTO TABLE `Ad_platform`
 FIELDS TERMINATED BY ',';
 
@@ -90,13 +87,13 @@ DROP TABLE IF EXISTS `Advertisement`;
      ON DELETE CASCADE
      ON UPDATE RESTRICT
  ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-LOAD DATA LOCAL INFILE '/Users/seanc/Documents/data/ad_entity.csv'
+LOAD DATA LOCAL INFILE '/Users/danielshiferaw/Documents/Spring2020/Info257/mAD_Politics_Remastered/data/ad_entity.csv'
 INTO TABLE `Advertisement`
 FIELDS TERMINATED BY ','
 (`Ad_id`,`Platform_id`,`State_id`,`Group_id`,`Ad_title`,@DATE_STR, @DATE_STR,`Cost`,`Impression`)
 SET
-    `Created_time` = STR_TO_DATE(@DATE_STR, '%c/%e/%y'),
-    `End_time` = STR_TO_DATE(@DATE_STR, '%c/%e/%y');
+    `Created_time` = STR_TO_DATE(@DATE_STR, '%c/%e/%Y'),
+    `End_time` = STR_TO_DATE(@DATE_STR, '%c/%e/%Y');
 
  DROP TABLE IF EXISTS `Polling`;
  CREATE TABLE `Polling` (
@@ -115,8 +112,8 @@ SET
      ON DELETE CASCADE
      ON UPDATE RESTRICT
  ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-LOAD DATA LOCAL INFILE '/Users/seanc/Documents/data/poll_entity.csv'
+LOAD DATA LOCAL INFILE '/Users/danielshiferaw/Documents/Spring2020/Info257/mAD_Politics_Remastered/data/poll_entity.csv'
 INTO TABLE `Polling`
 FIELDS TERMINATED BY ','
 ( `Poll_id`,`State_id`,`Candidate_id`,@DATE_STR,`Polling_percent`)
-SET `Check_date` = STR_TO_DATE(@DATE_STR, '%c/%e/%y');
+SET `Check_date` = STR_TO_DATE(@DATE_STR, '%c/%e/%Y');
