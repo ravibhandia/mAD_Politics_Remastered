@@ -32,11 +32,20 @@ def index():
 ################################# QUERY 1 ####################################
 @app.route("/q1", methods=["POST", "GET"])
 def Query_1():
+    # Query
+    query = "\
+    SELECT RANK() OVER(ORDER BY sum(cost) DESC) AS 'Ads Spending Ranking',\
+           CONCAT(CANDIDATE.First_name, ' ', CANDIDATE.Last_name) AS Candidate_Name,\
+           sum(cost) AS Total_Cost\
+           FROM Advertisement, CANDIDATE, Affiliates\
+           WHERE CANDIDATE.Candidate_id = Affiliates.Candidate_id AND\
+                 Advertisement.Group_id = Affiliates.Affiliate_id\
+           GROUP BY Candidate_Name\
+           ORDER BY 'Ads Spending Ranking' "
+
     # Obtain user selected topN values
     limit = request.args.get('topN')
-
-    # Query
-    query = " select rank() over(ORDER BY sum(cost) DESC) as 'Ads Spending Ranking', CONCAT(CANDIDATE.First_name, ' ', CANDIDATE.Last_name), sum(cost) from Advertisement, CANDIDATE WHERE CANDIDATE.Candidate_id = Advertisement.Candidate_id group by CANDIDATE.First_name"
+    # Show only the topN result
     limit_rank = " LIMIT 0, %s" % limit
     query += limit_rank
 
@@ -54,7 +63,7 @@ def Query_1():
         name["Ad_Spending"] = row[2]
         candidate_names.append(name)          # Append this dictionary to list
 
-    return render_template('q1.html',ad_spending_rank=candidate_names)
+    return render_template('q1.html',ad_spending_rank=candidate_names, limit = limit)
 ################################# QUERY 1 ####################################
 
 
@@ -63,19 +72,21 @@ def Query_1():
 def Query_2():
     #Query
     query = "\
-    WITH vote_rank as \
-    (select State_id,\
-            rank() over(partition by State_id order by Polling_percent DESC) as Polling_rank,\
+    WITH vote_rank as (\
+    SELECT State_id,\
+            RANK() over(partition by State_id order by Polling_percent DESC) AS Polling_rank,\
             Candidate_id,\
             Polling_percent,\
-            LEAD(Polling_percent, 1) over(partition by State_id order by Polling_percent DESC) as Runner_up_poll\
-    from Polling)\
-    select State.state_name,\
-           CONCAT(First_name, ' ', Last_name),\
-           (Polling_percent - Runner_up_poll) as 'Percent Lead'\
-    from vote_rank, CANDIDATE, State WHERE vote_rank.Polling_rank = 1 and\
-        vote_rank.Candidate_id = CANDIDATE.Candidate_id and\
-        vote_rank.State_id = State.State_id "
+            LEAD(Polling_percent, 1) OVER(PARTITION BY State_id ORDER BY Polling_percent DESC) AS Runner_up_poll\
+    FROM Polling)\
+    SELECT State.state_name,\
+            CONCAT(First_name, ' ', Last_name) AS Candidate_Name,\
+            Polling_percent,\
+            (Polling_percent - Runner_up_poll) AS 'Percent Lead'\
+    FROM vote_rank, CANDIDATE, State\
+    WHERE vote_rank.Polling_rank = 1 AND\
+            vote_rank.Candidate_id = CANDIDATE.Candidate_id AND\
+            vote_rank.State_id = State.State_id "
 
     # Obtain user selected State values
     state = request.args.get('state_selection')
@@ -83,6 +94,8 @@ def Query_2():
     if state != "All":
         query += " AND "
         query += " State.State_abbreviation = '%s' " % state
+
+    query += " ORDER BY State_name "
 
     # Execute Query
     result = db.engine.execute(query)
@@ -95,7 +108,8 @@ def Query_2():
         name = {}
         name["State_Name"] = row[0]
         name["Candidate_Name"] = row[1]
-        name["Percent_Lead"] = row[2]
+        name["Lead_poll"] = row[2]
+        name["Percent_Lead"] = row[3]
         Poll_lead_per_state.append(name)          # Append this dictionary to list
 
     return render_template('q2.html',State_poll_lead=Poll_lead_per_state, state=state)
@@ -105,24 +119,25 @@ def Query_2():
 @app.route("/q3", methods=["POST", "GET"])
 def Query_3():
     # Query
-    query = \
-    " WITH State_lead as\
-    (SELECT State_name,\
+    query = "\
+    WITH State_lead AS ( \
+    SELECT State_name,\
             RANK() OVER(PARTITION BY Polling.State_id ORDER BY Polling_percent DESC) AS Polling_rank,\
             CONCAT(CANDIDATE.First_name, ' ', CANDIDATE.Last_name) AS Candidate_name,\
             Polling_percent,\
             Delegates\
-    FROM Polling, State, CANDIDATE\
-    WHERE State.State_id = Polling.State_id AND Polling.Candidate_id = CANDIDATE.Candidate_id)\
+    FROM Polling\
+    LEFT JOIN State USING (State_id)\
+    RIGHT JOIN CANDIDATE USING (Candidate_id)\
+   )\
     SELECT ROW_NUMBER() OVER(ORDER BY sum(Delegates) DESC) AS Rank,\
-           Candidate_name,\
-           count(Delegates) as Total_States,\
-           sum(Delegates) as Total_Delegates\
+            Candidate_name,\
+            IFNULL(COUNT(Delegates), 0) AS Total_States,\
+            IFNULL(sum(Delegates), 0) AS Total_Delegates\
     FROM State_lead\
-    WHERE Polling_rank = 1\
-    GROUP BY Candidate_name\
-    ORDER BY sum(Delegates) DESC\
-    "
+    WHERE Polling_rank = 1 \
+    GROUP BY Candidate_name \
+    ORDER BY Rank "
 
     # Execute Query
     result = db.engine.execute(query)
@@ -229,34 +244,52 @@ def Query_6():
     WITH Ads_by_date AS (\
     SELECT Ad_id,\
            Platform_name,\
-           Group_id,\
            State_name,\
+           Advertisement.State_id,\
+           Affiliates.Candidate_id,\
            CONCAT(First_name, ' ', Last_name) as Candidate_Name,\
            Created_time as Ad_Start_Date,\
            End_time as Ad_End_Date,\
-           (SELECT Polling_percent FROM Polling, Advertisement WHERE Polling.Candidate_id = Advertisement.Candidate_id AND Polling.State_id = Advertisement.State_id AND Check_date = Created_time ) AS Poll_Start,\
-           (SELECT Polling_percent FROM Polling, Advertisement WHERE Polling.Candidate_id = Advertisement.Candidate_id AND Polling.State_id = Advertisement.State_id AND Check_date = End_time) AS Poll_End,\
            Cost\
     FROM Advertisement\
-    LEFT JOIN CANDIDATE USING(Candidate_id)\
+    LEFT JOIN Affiliates ON Affiliates.Affiliate_id = Advertisement.Group_id\
     LEFT JOIN State ON State.State_id = Advertisement.State_id\
     LEFT JOIN Ad_platform using(Platform_id)\
-    )\
+    LEFT JOIN CANDIDATE on CANDIDATE.Candidate_id = Affiliates.Candidate_id\
+    ),\
+    Ad_Start_Poll AS (\
     SELECT Ad_id,\
-           Candidate_Name,\
+           Advertisement.Created_time AS Ad_Start_Time,\
+           Check_date AS Poll_Check_Date,\
+           Polling_percent AS Ad_Start_Poll\
+    FROM Polling, Advertisement, Affiliates\
+    WHERE Polling.Candidate_id = Affiliates.Candidate_id AND\
+        Polling.State_id = Advertisement.State_id AND\
+        Group_id = Affiliate_id AND Check_date < Created_time\
+    ORDER BY Polling.Candidate_id, Polling.State_id\
+    ),\
+    Ad_End_Poll AS (\
+    SELECT Ad_id,\
+       Advertisement.End_time AS Ad_End_Time,\
+       Check_date AS Poll_Check_Date,\
+       Polling_percent AS Ad_End_Poll\
+    FROM Polling, Advertisement, Affiliates\
+    WHERE Polling.Candidate_id = Affiliates.Candidate_id AND\
+        Polling.State_id = Advertisement.State_id AND Group_id = Affiliate_id AND Check_date > End_time\
+    ORDER BY Polling.Candidate_id, Polling.State_id\
+    )\
+    SELECT Candidate_Name,\
+           Ad_id,\
            Platform_name,\
-           (Poll_End - Poll_Start) AS Pull_Difference,\
+           State_name,\
+           Ad_Start_Date,\
+           Ad_End_Date,\
            Cost,\
-           (Poll_End - Poll_Start)/Cost AS Pull_Improvement_By_Cost\
-    FROM Ads_by_date "
-
-    # Obtain user selected State values
-    Top_Bottom_5_selection = request.args.get('User_boost_selection')
-    # Show poll data of only user specified state
-    if Top_Bottom_5_selection == "Top_5":
-        query += " ORDER BY Pull_Improvement_By_Cost DESC LIMIT 5 "
-    else:
-        query += " ORDER BY Pull_Improvement_By_Cost ASC LIMIT 4 "
+           Ad_Start_Poll,\
+           Ad_End_Poll\
+    FROM Ads_by_date\
+    LEFT JOIN Ad_Start_Poll USING (Ad_id)\
+    LEFT JOIN Ad_End_Poll USING (Ad_id) "
 
     # Execute Query
     result = db.engine.execute(query)
@@ -267,12 +300,15 @@ def Query_6():
     # Iterate rows and append relative column values to a dictionary
     for row in result:
         name = {}
-        name["Ad_ID"] = row[0]
-        name["Candidate_name"] = row[1]
+        name["Candidate_name"] = row[0]
+        name["Ad_id"] = row[1]
         name["Platform_name"] = row[2]
-        name["Pull_diff"] = row[3]
-        name["Ad_cost"] = row[4]
-        name["Pull_improvement_by_cost"] = row[5]
+        name["State_name"] = row[3]
+        name["Ad_Start_Date"] = row[4]
+        name["Ad_End_Date"] = row[5]
+        name["Cost"] = row[6]
+        name["Ad_Start_Poll"] = row[7]
+        name["Ad_End_Poll"] = row[8]
         Ad_spending_worth.append(name)          # Append this dictionary to list
 
     return render_template('q6.html',Ad_spending_worth=Ad_spending_worth)

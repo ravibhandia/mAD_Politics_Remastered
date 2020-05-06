@@ -11,18 +11,19 @@
 	<p style="text-align:center">Bernie Sanders, Green Party, Breaking Point, AOC</p>
  	</div>
 
-	
+
 	<h1> ! mAD Politics - Campaign advertising </h1>
 
 	<h2> The following candidates are leading in the selected states: </h2>
-	
+
 	<table class="table">
 
 		<!-- # Create table heads -->
 		<tr>
 			<th>State Name</th>
 			<th>Candidate Name</th>
-			<th>Percent Lead</th>
+			<th>Front Runner Poll</th>
+			<th>Poll leads by</th>
 
 		<!-- # Iterate through list and display values of a speific key -->
 		</tr>
@@ -30,6 +31,7 @@
 		<tr>
 			<td>{{ ui_row.State_Name }}</td>
 			<td>{{ ui_row.Candidate_Name }}</td>
+			<td>{{ ui_row.Lead_poll }}</td>
 			<td>{{ ui_row.Percent_Lead }}</td>
 		</tr>
 

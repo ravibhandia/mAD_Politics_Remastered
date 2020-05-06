@@ -35,7 +35,7 @@
 
 			<form method="GET" action="/q1">
 				<br>
-				<label for="search" style="color:#000000"><b> 1. Which candidate has the most advisement spending?</b></label><br>
+				<label for="search" style="color:#000000"><b> 1. Which candidate has the most advertisement spending?</b></label><br>
 					<p> Show top
 			  	<select id="topN" name="topN">
 						<option value="1" name="topN"> 1 </option>
@@ -55,9 +55,14 @@
 					<p> Show who lead in
 					<select id="state_selection" name="state_selection">
 						<option value="All">All</option>
+						<option value="AZ">Arizona</option>
 						<option value="CA">California</option>
-						<option value="WA">Washington</option>
+						<option value="IN">Indiana</option>
+						<option value="MA">Massachusetts</option>
 						<option value="NY">New York</option>
+						<option value="PA">Pennsylvania</option>
+						<option value="VT">Vermont</option>
+						<option value="WA">Washington</option>
 					</select> state
 					<input type="submit" value="Go and find out" /></p>
 			</form>
@@ -66,8 +71,9 @@
 
 			<form method="GET" action="/q3">
 				<br>
-				<label for="search" style="color:#000000"><b> 3. Forecasted total leading states and delegates? </b></label>
+				<label for="search" style="color:#000000"><b> 3. Forecasted total leading states and delegates of all candidates </b></label>
 					<input type="submit" value="Go and find out" />
+				<br>
 			</form>
 
 <!-- Query 4  -->
@@ -104,12 +110,12 @@
 
 			<form method="GET" action="/q6">
 				<br>
-				<label for="search" style="color:#000000"><b> 6. Which advertisement spending boosted Polling result the most?</b></label><br>
-					<p> Show
+				<label for="search" style="color:#000000"><b> 6. Find out the relationship between advertisement spending vs. change of polling result</b></label><br>
+					<!-- <p> Show
 					<select id="User_boost_selection" name="User_boost_selection">
 						<option value="Top_5">Top 5</option>
 						<option value="Bottom_5">Bottom 5</option>
-					</select> results
+					</select> results -->
 					<input type="submit" value="Go and find out" /></p>
 			</form>
 
