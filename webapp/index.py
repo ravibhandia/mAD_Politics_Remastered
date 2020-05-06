@@ -159,6 +159,8 @@ def Query_4():
 
     #query += " AND "
     #query += "CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name) = '%s' " % canName
+    topNpf_rank = " LIMIT 0, %s" % topNpf
+    query += topNpf_rank
 
 
     # Show poll data of only user specified candidate
