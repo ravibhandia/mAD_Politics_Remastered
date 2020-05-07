@@ -206,13 +206,14 @@ def Query_5():
 
     print(canName)
     # Query
-    query = "SELECT DISTINCT(CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name)) AS Candidate_Name,State.State_name,Polling.Polling_percent\
+    query = "SELECT DISTINCT(CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name)) AS Candidate_Name,\
+    State.State_name,Polling.Polling_percent,Polling.Check_date\
     FROM CANDIDATE,State,Polling\
     WHERE CANDIDATE.State_id = Polling.State_id AND CANDIDATE.Candidate_id = Polling.Candidate_id AND CANDIDATE.State_id = State.State_id"
 
     query += " AND "
     query += "CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name) = '%s' " % canName
-
+    query += "  ORDER BY Check_date"
 
     # Show poll data of only user specified candidate
 
@@ -229,6 +230,7 @@ def Query_5():
         name["Candidate_Name"] = row[0]
         name["State_name"] = row[1]
         name["Polling_percent"] = row[2]
+        name["Check_date"] = row[3]
         candidate_names.append(name)          # Append this dictionary to list
 
     return render_template('q5.html',can_in_home=candidate_names,canName=canName)
