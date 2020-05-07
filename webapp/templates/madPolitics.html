@@ -94,7 +94,7 @@
 
 			<form method="GET" action="/q5">
 				<br>
-				<label for="search" style="color:#000000"><b> 5. Check to see how candidates do in their home states?</b></label><br>
+				<label for="search" style="color:#000000"><b> 5. Check to see how candidates do in their home states</b></label><br>
 					<p> Show the results for candidate
 			  	<select id="canName" name="canName">
 
@@ -118,6 +118,33 @@
 					</select> results -->
 					<input type="submit" value="Go and find out" /></p>
 			</form>
+
+<!-- Query 7  -->
+
+			<form method="POST" action="/q7">
+				<br>
+				<label for="search" style="color:#000000"><b> 7. Check to see candidates' affiliated groups</b></label><br>
+
+					<input type="checkbox" name="aflist" value="Andrew Yang"> Andrew Yang
+					<input type="checkbox" name="aflist" value="Bernie Sanders"> Bernie Sanders
+					<input type="checkbox" name="aflist" value="Donald Trump"> Donald Trump
+					<input type="checkbox" name="aflist" value="Elizabeth Warren"> Elizabeth Warren
+					<input type="checkbox" name="aflist" value="Joe Biden"> Joe Biden
+					<input type="checkbox" name="aflist" value="Mike Bloomberg"> Mike Bloomberg
+					<input type="checkbox" name="aflist" value="Pete Buttigieg"> Pete Buttigieg
+					
+
+				<!-- <p> Show the results for candidate
+			  	<select id="canName" name="canName">
+
+		    	{% for ui_row in canname %}
+    			<option value="{{ui_row.Candidate_Name}}">{{ui_row.Candidate_Name}}</option>
+	    		{% endfor %}
+    			</select> -->
+
+			   	<input type="submit" value="Go and find out" /></p>
+			</form>
+
 
 	<h3> Related Links: </h3>
 

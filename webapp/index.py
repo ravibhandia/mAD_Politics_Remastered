@@ -316,6 +316,58 @@ def Query_6():
 ################################# QUERY 6 ####################################
 
 
+################################# QUERY 7 ####################################
+@app.route("/q7", methods=["POST", "GET"])
+def Query_7():
+
+    #canNameaf = request.args.get('canNameaf')
+    aflist = request.form.getlist('aflist')
+    i = 1
+
+    
+    # Query
+    query = "SELECT DISTINCT(Affiliates.Affiliate_name),(CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name)) AS Candidate_Name\
+    FROM CANDIDATE, Affiliates\
+    WHERE CANDIDATE.Candidate_id = Affiliates.Candidate_id"
+
+    
+    if len(aflist) == 1:
+        canNameaf = request.form.get('aflist')
+        query += " AND "
+        query += "CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name) = '%s' " % canNameaf
+
+    elif len(aflist) > 1:
+        query += " AND ("
+        
+        for item in aflist:
+            if i < len(aflist):
+                query += "CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name) = '%s' " % item
+                query += "OR "
+                i += 1
+            
+            else:
+                query += "CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name) = '%s') " % item
+    
+        query += " ORDER BY Candidate_Name"
+
+    # Show poll data of only user specified candidate
+
+
+    # Execute Query
+    result = db.engine.execute(query)
+
+    # Create empty list
+    candidateaf_names = []
+
+    # Iterate rows and append relative column values to a dictionary
+    for row in result:
+        name = {}
+        name["Affiliate_name"] = row[0]
+        name["Candidate_Name"] = row[1]    
+        candidateaf_names.append(name)          # Append this dictionary to list
+
+    return render_template('q7.html',af_name=candidateaf_names, aflist=aflist) #,canNameaf=canNameaf)
+################################# QUERY 7 ####################################
 
 
 # # methods indicates a action in html
