@@ -34,14 +34,16 @@ def index():
 def Query_1():
     # Query
     query = "\
-    SELECT RANK() OVER(ORDER BY sum(cost) DESC) AS 'Ads Spending Ranking',\
+    SELECT rank() OVER(ORDER BY sum(cost) DESC) AS 'Ads Spending Ranking',\
            CONCAT(CANDIDATE.First_name, ' ', CANDIDATE.Last_name) AS Candidate_Name,\
-           sum(cost) AS Total_Cost\
-           FROM Advertisement, CANDIDATE, Affiliates\
-           WHERE CANDIDATE.Candidate_id = Affiliates.Candidate_id AND\
-                 Advertisement.Group_id = Affiliates.Affiliate_id\
-           GROUP BY Candidate_Name\
-           ORDER BY 'Ads Spending Ranking' "
+           IFNULL(sum(cost), 0) AS Total_Cost\
+    FROM Advertisement\
+    LEFT JOIN Affiliates\
+        ON Advertisement.Group_id = Affiliates.Affiliate_id\
+    RIGHT JOIN CANDIDATE\
+        ON CANDIDATE.Candidate_id = Affiliates.Candidate_id\
+    GROUP BY Candidate_Name\
+    ORDER BY `Ads Spending Ranking` "
 
     # Obtain user selected topN values
     limit = request.args.get('topN')
@@ -72,30 +74,38 @@ def Query_1():
 def Query_2():
     #Query
     query = "\
-    WITH vote_rank as (\
-    SELECT State_id,\
-            RANK() over(partition by State_id order by Polling_percent DESC) AS Polling_rank,\
+    WITH vote_rank AS\
+    (SELECT State_id,\
+            RANK() OVER(PARTITION BY State_id ORDER BY AVG(Polling_percent) DESC) AS Polling_rank,\
             Candidate_id,\
-            Polling_percent,\
-            LEAD(Polling_percent, 1) OVER(PARTITION BY State_id ORDER BY Polling_percent DESC) AS Runner_up_poll\
-    FROM Polling)\
+            ROUND(AVG(Polling_percent),2) AS Average_Poll\
+    FROM Polling\
+    GROUP BY State_id, Candidate_id\
+    ORDER BY State_id, Polling_rank),\
+    runner_up_diff AS\
+    (SELECT State_id,\
+           Polling_rank,\
+           Candidate_id,\
+           Average_Poll,\
+           Average_Poll - (LEAD(Average_Poll, 1) OVER(PARTITION BY State_id ORDER BY Average_Poll DESC)) AS Runner_up_poll_Diff\
+    FROM vote_rank)\
     SELECT State.state_name,\
-            CONCAT(First_name, ' ', Last_name) AS Candidate_Name,\
-            Polling_percent,\
-            (Polling_percent - Runner_up_poll) AS 'Percent Lead'\
-    FROM vote_rank, CANDIDATE, State\
-    WHERE vote_rank.Polling_rank = 1 AND\
-            vote_rank.Candidate_id = CANDIDATE.Candidate_id AND\
-            vote_rank.State_id = State.State_id "
+           CONCAT(First_name, ' ', Last_name) AS Candidate_Name,\
+           Average_Poll,\
+           Runner_up_poll_Diff AS 'Percent Lead'\
+    FROM runner_up_diff, CANDIDATE, State\
+    WHERE runner_up_diff.Candidate_id = CANDIDATE.Candidate_id AND \
+        runner_up_diff.State_id = State.State_id AND \
+        runner_up_diff.Polling_rank = 1 "
 
     # Obtain user selected State values
     state = request.args.get('state_selection')
     # Show poll data of only user specified state
     if state != "All":
         query += " AND "
-        query += " State.State_abbreviation = '%s' " % state
+        query += "State.State_abbreviation = '%s' " % state
 
-    query += " ORDER BY State_name "
+    query += " ORDER BY State.State_name "
 
     # Execute Query
     result = db.engine.execute(query)
@@ -120,23 +130,25 @@ def Query_2():
 def Query_3():
     # Query
     query = "\
-    WITH State_lead AS ( \
-    SELECT State_name,\
-            RANK() OVER(PARTITION BY Polling.State_id ORDER BY Polling_percent DESC) AS Polling_rank,\
-            CONCAT(CANDIDATE.First_name, ' ', CANDIDATE.Last_name) AS Candidate_name,\
-            Polling_percent,\
-            Delegates\
-    FROM Polling\
-    LEFT JOIN State USING (State_id)\
-    RIGHT JOIN CANDIDATE USING (Candidate_id)\
-   )\
-    SELECT ROW_NUMBER() OVER(ORDER BY sum(Delegates) DESC) AS Rank,\
+    WITH State_lead AS\
+       (SELECT  State_name,\
+                RANK() OVER(PARTITION BY Polling.State_id ORDER BY AVG(Polling_percent) DESC) AS Polling_rank,\
+                CONCAT(CANDIDATE.First_name, ' ', CANDIDATE.Last_name) AS Candidate_name,\
+                Candidate_id,\
+                AVG(Polling_percent),\
+               Delegates\
+        FROM Polling\
+        LEFT JOIN  State USING (State_id)\
+        RIGHT JOIN CANDIDATE USING (Candidate_id)\
+        GROUP BY Polling.State_id, Candidate_name\
+       )\
+    SELECT ROW_NUMBER() OVER(ORDER BY sum(State_lead.Delegates) DESC) AS Rank,\
             Candidate_name,\
-            IFNULL(COUNT(Delegates), 0) AS Total_States,\
-            IFNULL(sum(Delegates), 0) AS Total_Delegates\
+            IFNULL(COUNT(State_lead.Delegates), 0) AS Total_States,\
+            IFNULL(sum(State_lead.Delegates), 0) AS Total_Delegates\
     FROM State_lead\
-    WHERE Polling_rank = 1 \
-    GROUP BY Candidate_name \
+    WHERE Polling_rank = 1\
+    GROUP BY Candidate_name\
     ORDER BY Rank "
 
     # Execute Query
@@ -324,13 +336,13 @@ def Query_7():
     aflist = request.form.getlist('aflist')
     i = 1
 
-    
+
     # Query
     query = "SELECT DISTINCT(Affiliates.Affiliate_name),(CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name)) AS Candidate_Name\
     FROM CANDIDATE, Affiliates\
     WHERE CANDIDATE.Candidate_id = Affiliates.Candidate_id"
 
-    
+
     if len(aflist) == 1:
         canNameaf = request.form.get('aflist')
         query += " AND "
@@ -338,16 +350,16 @@ def Query_7():
 
     elif len(aflist) > 1:
         query += " AND ("
-        
+
         for item in aflist:
             if i < len(aflist):
                 query += "CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name) = '%s' " % item
                 query += "OR "
                 i += 1
-            
+
             else:
                 query += "CONCAT(CANDIDATE.First_name,' ',CANDIDATE.Last_name) = '%s') " % item
-    
+
         query += " ORDER BY Candidate_Name"
 
     # Show poll data of only user specified candidate
