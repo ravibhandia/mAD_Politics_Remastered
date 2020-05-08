@@ -16,12 +16,12 @@ Docker Desktop 2.2.0.5
 
 ### Installing
 
-1. Clone or download this Github repository for all the necessary materials. 
-	
+1. Clone or download this Github repository for all the necessary materials.
+
 
 [Instruction Link of Cloning Github Repository](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository)
 
-2. Build and Run the Flask Container through Docker. 
+2. Build and Run the Flask Container through Docker.
 
 [Instruction Link of Docker Container Creation and Running](https://github.com/munners17/python-flask-app).
 
@@ -65,6 +65,8 @@ to make it easier and also for demonstration purposes. You can take a look at ``
 The data is processed in clean_data and is exported to csv file. The output is then bulkloaded
 into the database using queries in Mad_politics.sql
 
+Note: When running Mad_politics.sql make sure to update the path of the cvs with your local absolute path.
+
 ### webapp
 ---
 * **Archive** : previous version of applictaion files.
@@ -78,4 +80,3 @@ into the database using queries in Mad_politics.sql
 * https://github.com/munners17/INFO257-Sp2020
 * Luis Aguilar
 * Eric Zan
-
