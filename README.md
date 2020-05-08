@@ -1,6 +1,6 @@
 ##### Project Title
 
-##!mAD Politics - Campaign Advertising
+!mAD Politics - Campaign Advertising
 
 ## Getting Started
 
@@ -26,21 +26,18 @@ Docker Desktop 2.2.0.5
 
 ```
 [Instruction Link of Docker Container Creation and Running] (https://github.com/munners17/python-flask-app)
-* **Dockerfile** : Use this file to set up Docker container. Be sure to direct to webapp folder
+Dockerfile in folder: Use this file to set up Docker container. Be sure to direct to webapp folder
 ```
 
 3. Run Mad_politics.sql in MariabDB to create the database.
 
 ```
 All data files in the folder of "Data"
-* **Mad_politics.sql** : The SQL file to build up our database. Be sure to direct the file location to data folders in `LOAD DATA LOCAL INFILE'(path to .csv)' `
+Mad_politics.sql in folder: be sure to direct the file location to data folders in `LOAD DATA LOCAL INFILE'(path to .csv)' `
 ```
 
 4. Open the web browser, navigate to http://127.0.0.1:5000/ to check if webpage is up!
 
-```
-
-```
 
 
 ### Deliverables
