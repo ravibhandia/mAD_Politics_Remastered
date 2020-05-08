@@ -1,6 +1,17 @@
-# Workshop 5 files can be found here for mAD_Politics_Remastered
+# mAD_Politics ! #
 
-Deliverables Folder
+
+
+
+### Deliverables
 ---
 * **Presentation_mAD_Politics.pdf** : Final presentation slides
 * **.pdf** : Final report 
+
+### data
+---
+
+
+### wepapp
+---
+* 
