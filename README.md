@@ -1,6 +1,4 @@
-##### Project Title
-
-!mAD Politics - Campaign Advertising
+# !mAD Politics - Campaign Advertising
 
 ## Getting Started
 
@@ -41,7 +39,8 @@ Mad_politics.sql in folder: be sure to direct the file location to data folders 
 ### Deliverables
 ---
 * **Presentation_mAD_Politics.pdf** : Final presentation slides
-* **.pdf** : Final report
+* **mAd Politics - How is money influencing democracy.pdf** : Final report
+* **Individual Contribution.pdf** : Detailed individual contribution
 
 ### Data
 ---
@@ -67,7 +66,7 @@ into the database using queries in Mad_politics.sql
 
 Note: When running Mad_politics.sql make sure to update the path of the cvs with your local absolute path.
 
-### webapp
+### Webapp
 ---
 * **Archive** : previous version of applictaion files.
 * **Index.py** : Python code that import the data and stores the configuration for webapp.
