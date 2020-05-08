@@ -70,7 +70,7 @@ into the database using queries in Mad_politics.sql
 * **Archive** : previous version of applictaion files.
 * **Index.py** : Python code that import the data and stores the configuration for webapp.
 * **static** : stores css file and images for user interface styling.
-* **templatesy** : store all the .html files for home page and results pages.
+* **templates** : store all the .html files for home page and results pages.
 
 
 ## Acknowledgments
