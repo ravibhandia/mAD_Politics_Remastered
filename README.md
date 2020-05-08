@@ -19,13 +19,13 @@ Docker Desktop 2.2.0.5
 1. Clone or download this Github repository for all the necessary materials. 
 	
 ```
-[Instruction Link of Cloning Github Repository] (https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository)
+[Instruction Link of Cloning Github Repository] (https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository).
 ```
 
 2. Build and Run the Flask Container through Docker. 
 
 ```
-[Instruction Link of Docker Container Creation and Running] (https://github.com/munners17/python-flask-app)
+[Instruction Link of Docker Container Creation and Running] (https://github.com/munners17/python-flask-app).
 Dockerfile in folder: Use this file to set up Docker container. Be sure to direct to webapp folder
 ```
 
